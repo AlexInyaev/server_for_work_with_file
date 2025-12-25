@@ -34,14 +34,14 @@ func (h *Handler) TextWrite(c echo.Context) error {
 		})
 	}
 
-	err = h.writeText.Execute(c.Request().Context(), body.Name, body.Email, body.Text)
+	err = h.exWriteText.Execute(c.Request().Context(), body.Name, body.Email, body.Text)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]any{
-			"error": "name is required",
+			"error": "text is required",
 		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]any{
-		"ok": "ok",
+		"success": "ok",
 	})
 }

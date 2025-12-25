@@ -19,14 +19,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(c.Port)
 	// infrastructure
 	repo := repository.New()
 	// executors
-	writeText := executor.NewWriteText(repo)
+	exWriteText := executor.NewWriteText(repo)
 	// routes
 	e := echo.New()
-	h := handler.NewHandler(e, writeText)
+	h := handler.NewHandler(e, exWriteText)
 
 	h.InitRoutes()
 	// run

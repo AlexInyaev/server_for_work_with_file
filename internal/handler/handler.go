@@ -8,17 +8,17 @@ import (
 
 type Handler struct {
 	// common
-	e         *echo.Echo
-	writeText *executor.WriteText
+	e           *echo.Echo
+	exWriteText *executor.WriteText
 }
 
 func NewHandler(
 	e *echo.Echo,
-	writeText *executor.WriteText,
+	exWriteText *executor.WriteText,
 ) *Handler {
 	return &Handler{
-		e:         e,
-		writeText: writeText,
+		e:           e,
+		exWriteText: exWriteText,
 	}
 }
 
