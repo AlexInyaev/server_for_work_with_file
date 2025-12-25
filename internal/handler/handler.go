@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"github.com/AlexInyaev/server_for_work_with_file/internal/executor"
 	"github.com/labstack/echo/v4"
+
+	"github.com/AlexInyaev/server_for_work_with_file/internal/executor"
 )
 
 type Handler struct {

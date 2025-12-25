@@ -1,10 +1,12 @@
 package handler
 
 import (
-	"github.com/AlexInyaev/server_for_work_with_file/internal/handler/formatter"
-	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
+
+	"github.com/labstack/echo/v4"
+
+	"github.com/AlexInyaev/server_for_work_with_file/internal/handler/formatter"
 )
 
 func (h *Handler) TextWrite(c echo.Context) error {
@@ -24,6 +26,7 @@ func (h *Handler) TextWrite(c echo.Context) error {
 			"error": "email is required",
 		})
 	}
+
 	body.Name = strings.TrimSpace(body.Name)
 	if body.Name == "" {
 		return c.JSON(http.StatusBadRequest, map[string]any{
@@ -32,12 +35,12 @@ func (h *Handler) TextWrite(c echo.Context) error {
 	}
 
 	err = h.writeText.Execute(c.Request().Context(), body.Name, body.Email, body.Text)
-
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]any{
 			"error": "name is required",
 		})
 	}
+
 	return c.JSON(http.StatusOK, map[string]any{
 		"ok": "ok",
 	})

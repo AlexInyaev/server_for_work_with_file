@@ -2,31 +2,34 @@ package main
 
 import (
 	"fmt"
+	"log"
+
+	"github.com/labstack/echo/v4"
+
 	"github.com/AlexInyaev/server_for_work_with_file/internal/config"
 	"github.com/AlexInyaev/server_for_work_with_file/internal/executor"
 	"github.com/AlexInyaev/server_for_work_with_file/internal/handler"
 	"github.com/AlexInyaev/server_for_work_with_file/internal/infrastructure/repository"
-	"github.com/labstack/echo/v4"
-	"log"
 )
 
 func main() {
-	//config
+	// config
 	c, err := config.NewConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Println(c.Port)
-	//infrastructure
+	// infrastructure
 	repo := repository.New()
-	//executors
+	// executors
 	writeText := executor.NewWriteText(repo)
-	//routes
+	// routes
 	e := echo.New()
 	h := handler.NewHandler(e, writeText)
 
 	h.InitRoutes()
-	//run
+	// run
 	httpPort := fmt.Sprintf(":%v", c.Port)
 	e.Logger.Fatal(e.Start(httpPort))
 }

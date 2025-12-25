@@ -8,8 +8,8 @@ type Config struct {
 
 func NewConfig() (*Config, error) {
 	var c Config
-	err := env.Parse(&c)
 
+	err := env.Parse(&c)
 	if err != nil {
 		return nil, err
 	}

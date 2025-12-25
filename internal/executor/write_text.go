@@ -23,5 +23,6 @@ func (e *WriteText) Execute(ctx context.Context, name, email, text string) error
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
