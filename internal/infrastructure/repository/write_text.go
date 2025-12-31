@@ -17,6 +17,7 @@ func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, dir
 	if os.IsNotExist(err) {
 		fmt.Printf("Директория %s не существует\n", path)
 		makeDir(path)
+		fmt.Printf("Создана директория  %s \n", path)
 	} else if info.IsDir() {
 		fmt.Printf("Директория %s существует\n", path)
 	} else {
@@ -31,11 +32,12 @@ func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, dir
 	//Проверка существования файла
 	_, err = os.Stat(filePath)
 	if os.IsNotExist(err) {
-		fmt.Println("File does not exist")
+		fmt.Println("Файл не существует")
 		var file *os.File
 		file, err = os.Create(filePath)
+		fmt.Println(filePath)
 		if err != nil { // если возникла ошибка
-			fmt.Println("Unable to create file:", err)
+			fmt.Println("Не удается создать файл:", err)
 			os.Exit(1) // выходим из программы
 		}
 		defer func() {
@@ -45,8 +47,9 @@ func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, dir
 		}()
 		fmt.Println(file.Name())
 	} else {
-		fmt.Println("File exists")
+		fmt.Println("Файл существует")
 	}
+	writToFile(name, text, filePath)
 	return nil
 }
 
@@ -58,4 +61,26 @@ func makeDir(path string) {
 		return
 	}
 	fmt.Println("Директория успешно создана")
+}
+func writToFile(authorName, quote, filePath string) {
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Ошибка закрытия файла: %v", err)
+		}
+	}()
+
+	authorNameMod := fmt.Sprintf("%s \n", authorName)
+	_, err = file.WriteString(authorNameMod)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = file.WriteString(quote)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
