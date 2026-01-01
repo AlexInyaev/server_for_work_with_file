@@ -5,7 +5,7 @@ import (
 )
 
 type WriteTextRepository interface {
-	WriteTextToFile(ctx context.Context, name, email, text, directory string) error
+	WriteTextToFile(ctx context.Context, name, email, text, directory, recordType string) error
 }
 
 type WriteText struct {
@@ -18,8 +18,8 @@ func NewWriteText(repo WriteTextRepository) *WriteText {
 	}
 }
 
-func (e *WriteText) Execute(ctx context.Context, name, email, text, directory string) error {
-	err := e.repo.WriteTextToFile(ctx, name, email, text, directory)
+func (e *WriteText) Execute(ctx context.Context, name, email, text, directory, recordType string) error {
+	err := e.repo.WriteTextToFile(ctx, name, email, text, directory, recordType)
 	if err != nil {
 		return err
 	}

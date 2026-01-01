@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, directory string) error {
+func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, directory, recordType string) error {
 	_ = ctx
 	fmt.Println(email)
 	//Проверка существования директории
@@ -49,7 +49,12 @@ func (r *Repository) WriteTextToFile(ctx context.Context, name, email, text, dir
 	} else {
 		fmt.Println("Файл существует")
 	}
-	writToFile(name, text, filePath)
+	if recordType == "write" {
+		writeToFile(name, text, filePath)
+	} else {
+		overWriteToFile(name, text, filePath)
+	}
+
 	return nil
 }
 
@@ -62,7 +67,9 @@ func makeDir(path string) {
 	}
 	fmt.Println("Директория успешно создана")
 }
-func writToFile(authorName, quote, filePath string) {
+
+// Функция перезаписи файла
+func overWriteToFile(authorName, quote, filePath string) {
 	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
@@ -83,4 +90,23 @@ func writToFile(authorName, quote, filePath string) {
 		log.Fatal(err)
 	}
 
+}
+
+// Функция до записи в файл
+func writeToFile(authorName, quote, filePath string) {
+	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Ошибка закрытия файла: %v", err)
+		}
+	}()
+
+	stringForWrite := fmt.Sprintf("\n\n%s\n%s", authorName, quote)
+	_, err = file.WriteString(stringForWrite)
+	if err != nil {
+		fmt.Println("Ошибка записи файла:", err)
+	}
 }

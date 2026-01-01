@@ -34,7 +34,7 @@ func (h *Handler) TextWrite(c echo.Context) error {
 		})
 	}
 
-	err = h.exWriteText.Execute(c.Request().Context(), body.Name, body.Email, body.Text, body.Directory)
+	err = h.exWriteText.Execute(c.Request().Context(), body.Name, body.Email, body.Text, body.Directory, body.RecordType)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]any{
 			"error": "text is required",
